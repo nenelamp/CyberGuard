@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Award } from 'lucide-react';
+import PhishingAwarenessModule from './training/PhishingAwarenessModule';
 import PasswordSecurityModule from './training/PasswordSecurityModule';
 import SocialEngineeringModule from './training/SocialEngineeringModule';
 import MFAModule from './training/MFAModule';
@@ -91,6 +92,8 @@ const TrainingModule: React.FC<TrainingModuleProps> = ({ onNavigate }) => {
 
   const renderSelectedModule = () => {
     switch (selectedModule) {
+      case 'phishing':
+        return <PhishingAwarenessModule onComplete={() => handleModuleComplete('phishing')} onExit={handleModuleExit} />;
       case 'password':
         return <PasswordSecurityModule onComplete={() => handleModuleComplete('password')} onExit={handleModuleExit} />;
       case 'social-engineering':
