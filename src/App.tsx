@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Shield, Users, BookOpen, Target, BarChart3, Trophy, Settings, Menu, X } from 'lucide-react';
+import { useApp } from './contexts/AppContext';
 import LandingPage from './components/LandingPage';
 import LoginPage from './components/LoginPage';
 import SignupPage from './components/SignupPage';
@@ -14,6 +15,7 @@ type ViewType = 'landing' | 'login' | 'signup' | 'employee' | 'admin' | 'trainin
 function App() {
   const [currentView, setCurrentView] = useState<ViewType>('landing');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { auth, logout } = useApp();
 
   const navigationItems = [
     { id: 'employee', label: 'Employee Dashboard', icon: Users },
@@ -89,6 +91,30 @@ function App() {
                   </button>
                 );
               })}
+              
+              {auth.isAuthenticated && (
+                <div className="flex items-center space-x-2 ml-4 pl-4 border-l border-gray-200">
+                  <div className="flex items-center space-x-2">
+                    <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full flex items-center justify-center">
+                      <span className="text-white text-sm font-bold">
+                        {auth.user?.firstName?.charAt(0) || 'U'}
+                      </span>
+                    </div>
+                    <span className="text-gray-700 font-medium hidden xl:block">
+                      {auth.user?.firstName}
+                    </span>
+                  </div>
+                  <button
+                    onClick={() => {
+                      logout();
+                      setCurrentView('landing');
+                    }}
+                    className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-xl hover:bg-white/60 transition-all duration-200"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* Mobile menu button */}

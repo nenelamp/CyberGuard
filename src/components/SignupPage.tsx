@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Shield, Mail, Lock, Eye, EyeOff, ArrowRight, User, Building, CheckCircle, Star } from 'lucide-react';
+import { useApp } from '../contexts/AppContext';
 
 interface SignupPageProps {
   onNavigate: (view: string) => void;
@@ -17,11 +18,28 @@ const SignupPage: React.FC<SignupPageProps> = ({ onNavigate }) => {
     confirmPassword: '',
     agreeToTerms: false
   });
+  const { signup, isLoading, error, clearError } = useApp();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle signup logic here
-    onNavigate('employee'); // Navigate to employee dashboard after signup
+    clearError();
+    
+    if (formData.password !== formData.confirmPassword) {
+      // Handle password mismatch error
+      return;
+    }
+    
+    const success = await signup({
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      email: formData.email,
+      company: formData.company,
+      password: formData.password,
+    });
+    
+    if (success) {
+      onNavigate('employee'); // Navigate to employee dashboard after signup
+    }
   };
 
   const features = [
@@ -48,6 +66,12 @@ const SignupPage: React.FC<SignupPageProps> = ({ onNavigate }) => {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
+              {error && (
+                <div className="bg-red-50 border border-red-200 rounded-2xl p-4">
+                  <p className="text-red-800 text-sm font-medium">{error}</p>
+                </div>
+              )}
+              
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-3">
@@ -203,9 +227,12 @@ const SignupPage: React.FC<SignupPageProps> = ({ onNavigate }) => {
 
               <button
                 type="submit"
-                className="w-full btn-primary text-lg flex items-center justify-center"
+                disabled={isLoading}
+                className={`w-full btn-primary text-lg flex items-center justify-center ${
+                  isLoading ? 'opacity-50 cursor-not-allowed' : ''
+                }`}
               >
-                Create Account
+                {isLoading ? 'Creating Account...' : 'Create Account'}
                 <ArrowRight className="h-5 w-5 ml-2" />
               </button>
             </form>

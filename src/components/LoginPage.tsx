@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Shield, Mail, Lock, Eye, EyeOff, ArrowRight, Star, Users, Award } from 'lucide-react';
+import { useApp } from '../contexts/AppContext';
 
 interface LoginPageProps {
   onNavigate: (view: string) => void;
@@ -12,11 +13,16 @@ const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
     password: '',
     rememberMe: false
   });
+  const { login, isLoading, error, clearError } = useApp();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle login logic here
-    onNavigate('employee'); // Navigate to employee dashboard after login
+    clearError();
+    
+    const success = await login(formData.email, formData.password);
+    if (success) {
+      onNavigate('employee'); // Navigate to employee dashboard after login
+    }
   };
 
   return (
@@ -83,6 +89,12 @@ const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
+              {error && (
+                <div className="bg-red-50 border border-red-200 rounded-2xl p-4">
+                  <p className="text-red-800 text-sm font-medium">{error}</p>
+                </div>
+              )}
+              
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-3">
                   Email Address
@@ -152,9 +164,12 @@ const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
 
               <button
                 type="submit"
-                className="w-full btn-primary text-lg flex items-center justify-center"
+                disabled={isLoading}
+                className={`w-full btn-primary text-lg flex items-center justify-center ${
+                  isLoading ? 'opacity-50 cursor-not-allowed' : ''
+                }`}
               >
-                Sign In
+                {isLoading ? 'Signing In...' : 'Sign In'}
                 <ArrowRight className="h-5 w-5 ml-2" />
               </button>
             </form>

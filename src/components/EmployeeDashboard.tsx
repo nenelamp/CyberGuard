@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Trophy, Target, BookOpen, Clock, Award, TrendingUp, Calendar, CheckCircle, AlertTriangle, Play, Zap, Star, ChevronRight, Users, Shield } from 'lucide-react';
+import { useApp } from '../contexts/AppContext';
 
 interface EmployeeDashboardProps {
   onNavigate: (view: string) => void;
@@ -8,6 +9,7 @@ interface EmployeeDashboardProps {
 const EmployeeDashboard: React.FC<EmployeeDashboardProps> = ({ onNavigate }) => {
   const [activeTab, setActiveTab] = useState('overview');
   const [isVisible, setIsVisible] = useState(false);
+  const { auth } = useApp();
 
   useEffect(() => {
     setIsVisible(true);
@@ -97,7 +99,7 @@ const EmployeeDashboard: React.FC<EmployeeDashboardProps> = ({ onNavigate }) => 
             <div className="relative">
               <div className="flex items-center justify-between">
                 <div>
-                  <h1 className="text-3xl md:text-4xl font-bold mb-2">Welcome back, Alex! 👋</h1>
+                  <h1 className="text-3xl md:text-4xl font-bold mb-2">Welcome back, {auth.user?.firstName || 'User'}! 👋</h1>
                   <p className="text-blue-100 text-lg">Keep up the great work on your cybersecurity journey</p>
                   <div className="flex items-center mt-4 space-x-6">
                     <div className="flex items-center">
