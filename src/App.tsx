@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Shield, Users, BookOpen, Target, BarChart3, Trophy, Settings, Menu, X } from 'lucide-react';
 import { useApp } from './contexts/AppContext';
+import { useApp } from './contexts/AppContext';
 import LandingPage from './components/LandingPage';
 import LoginPage from './components/LoginPage';
 import SignupPage from './components/SignupPage';

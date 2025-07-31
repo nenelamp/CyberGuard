@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Trophy, Target, BookOpen, Clock, Award, TrendingUp, Calendar, CheckCircle, AlertTriangle, Play, Zap, Star, ChevronRight, Users, Shield } from 'lucide-react';
 import { useApp } from '../contexts/AppContext';
+import { useApp } from '../contexts/AppContext';
 
 interface EmployeeDashboardProps {
   onNavigate: (view: string) => void;

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Shield, Mail, Lock, Eye, EyeOff, ArrowRight, Star, Users, Award } from 'lucide-react';
 import { useApp } from '../contexts/AppContext';
+import { useApp } from '../contexts/AppContext';
 
 interface LoginPageProps {
   onNavigate: (view: string) => void;
